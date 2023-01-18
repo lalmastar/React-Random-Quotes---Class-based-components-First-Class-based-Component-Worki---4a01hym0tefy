@@ -1,30 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/App.css";
 
 var colors = [
-  '#16a085',
-  '#27ae60',
-  '#2c3e50',
-  '#f39c12',
-  '#e74c3c',
-  '#9b59b6',
-  '#FB6964',
-  '#342224',
-  '#472E32',
-  '#BDBB99',
-  '#77B1A9',
-  '#73A857'
+  "#16a085",
+  "#27ae60",
+  "#2c3e50",
+  "#f39c12",
+  "#e74c3c",
+  "#9b59b6",
+  "#FB6964",
+  "#342224",
+  "#472E32",
+  "#BDBB99",
+  "#77B1A9",
+  "#73A857",
 ];
 
 const App = () => {
-
-    return (
-      <div id="main">
-        <div id="wrapper">
-          
-        </div>
+  const [quotes,setQuotes] = useState({});
+  const getQuoteHandler = ()=> {
+    fetch('https://api.quotable.io/random').then(res => res.json())
+    .then(data => {
+      console.log(data);
+      setQuotes(data)
+    });
+  }
+  useEffect(()=>{
+    getQuoteHandler();
+  },[])
+  const ind = Math.trunc(Math.random()*12);
+  return (
+    <div id="main">
+      <div id="wrapper" style={{backgroundColor:colors[ind],color:'white'}}>
+        <div className="quote-text">{quotes.content}</div>
+        <div className="quote-author">{quotes.author}</div>
       </div>
-    );
+        <button id="new-quote" className="button" onClick={getQuoteHandler}>New Quote</button>
+    </div>
+  );
 };
 
 export default App;
